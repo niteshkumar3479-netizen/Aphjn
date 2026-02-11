@@ -13,7 +13,7 @@ st.set_page_config(
 
 @st.cache_resource
 def load_model():
-    model_path = 'insurance_model.joblib'
+    model_path = 'model.pkl'
     if os.path.exists(model_path):
         return joblib.load(model_path)
     else:
@@ -92,3 +92,4 @@ if st.button("🔮 Predict Premium", type="primary"):
     
     st.success(f"**🎯 Premium Category: {pred}**")
     st.bar_chart(dict(zip(model.classes_, probs)))
+
