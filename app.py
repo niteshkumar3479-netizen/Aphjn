@@ -32,7 +32,6 @@ try:
 except:
     st.stop()
 
-# Your preprocessing functions (EXACT from notebook)
 def age_group(age):
     if age < 25: return 'young'
     elif age < 45: return 'adult'
@@ -56,7 +55,6 @@ def city_tier(city):
     elif city in tier2_cities: return 2
     return 3
 
-# UI
 st.title("Insurance Premium Predictor")
 st.markdown("90% Accurate Random Forest Model")
 
@@ -86,17 +84,17 @@ col2.metric("Age Group", agegroup.title())
 col3.metric("Risk", risk.title())
 col4.metric("City Tier", citytier)
 
-# EXACT column order from your training
+# ✅ FIXED: EXACT column names your model expects (snake_case)
 input_df = pd.DataFrame({
     'bmi': [bmi_val],
-    'agegroup': [agegroup],
-    'lifestylerisk': [risk],
-    'citytier': [citytier],
-    'incomelpa': [income],
+    'age_group': [agegroup],      # ← FIXED: was 'agegroup'
+    'lifestyle_risk': [risk],     # ← FIXED: was 'risk' 
+    'city_tier': [citytier],      # ← FIXED: was 'citytier'
+    'income_lpa': [income],       # ← FIXED: was 'income'
     'occupation': [occupation]
-}, columns=['bmi', 'agegroup', 'lifestylerisk', 'citytier', 'incomelpa', 'occupation'])
+})
 
-with st.expander("Debug: Input Data"):
+with st.expander("Debug: Input DataFrame"):
     st.dataframe(input_df)
 
 if st.button("Predict Premium Category", type="primary"):
@@ -110,8 +108,13 @@ if st.button("Predict Premium Category", type="primary"):
             st.metric("Highest Confidence", f"{max(probabilities):.1%}")
         with col2:
             st.bar_chart(dict(zip(model.classes_, probabilities)))
+            
+        st.info(f"All probabilities: {dict(zip(model.classes_, [f'{p:.1%}' for p in probabilities]))}")
+        
     except Exception as e:
         st.error(f"Prediction Error: {str(e)}")
+        st.code(str(e))
 
 with st.sidebar:
-    st.info("Model Features:\n• BMI\n• Age Group\n• Lifestyle Risk\n• City Tier\n• Income (LPA)\n• Occupation")
+    st.info("Model Features:\n• bmi\n• age_group\n• lifestyle_risk\n• city_tier\n• income_lpa\n• occupation")
+
