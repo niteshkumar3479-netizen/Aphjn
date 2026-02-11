@@ -6,7 +6,7 @@ import numpy as np
 @st.cache_resource
 def load_model():
     try:
-        model = joblib.load('car_pridiction_model.pkl')
+        model = joblib.load('model.pkl')
         st.success("Model loaded successfully!")
         return model
     except FileNotFoundError:
@@ -122,5 +122,6 @@ with st.sidebar:
     st.write("- **Features**: bmi, agegroup, lifestylerisk, citytier, incomelpa, occupation")
     st.write("- **Target**: insurancepremiumcategory")
     st.write("- **Accuracy**: ~0.90 on test set [from notebook]")
+
 
 
