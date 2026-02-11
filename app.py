@@ -1,13 +1,20 @@
 import streamlit as st
 import pandas as pd
-import pickle
+import joblib
 import numpy as np
 
-# Load the trained pipeline
 @st.cache_resource
 def load_model():
-    with open('model.pkl', 'rb') as f:
-        return pickle.load(f)
+    try:
+        model = joblib.load('car_pridiction_model.pkl')
+        st.success("Model loaded successfully!")
+        return model
+    except FileNotFoundError:
+        st.error("Model file 'advanced_car_valuation_model.pkl' not found!")
+        return None
+    except Exception as e:
+        st.error(f"Error loading model: {str(e)}")
+        return None
 
 model = load_model()
 
@@ -115,3 +122,4 @@ with st.sidebar:
     st.write("- **Features**: bmi, agegroup, lifestylerisk, citytier, incomelpa, occupation")
     st.write("- **Target**: insurancepremiumcategory")
     st.write("- **Accuracy**: ~0.90 on test set [from notebook]")
+
