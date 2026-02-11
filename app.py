@@ -123,3 +123,4 @@ with st.sidebar:
     st.write("- **Target**: insurancepremiumcategory")
     st.write("- **Accuracy**: ~0.90 on test set [from notebook]")
 
+
